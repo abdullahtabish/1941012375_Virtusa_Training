@@ -1,0 +1,294 @@
+JAVA -->
+
+Q.1)Find unique strings in an array of strings?
+    Input 
+    strArray = {“abc”, “def, “ABZ”, “ASD”, “AbC”};
+    Similar strings  - include case insensitive
+    output - “abc”, “def”,”ABZ”,”ASD”
+
+Solution:
+
+import java.util.*;
+
+class Q1 {
+    public static void main(String[] args) {
+        String[] strArray = { "abc", "def", "ABZ", "ASD", "AbC" };
+        int n = strArray.length;
+        List<String> storedItem = new ArrayList<String>();
+
+        for (int i = 0; i < n; i++) {
+            int flag = 0;
+            for (int j = 0; j < i; j++) {
+                if (strArray[i].equalsIgnoreCase(strArray[j])) {
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 0) {
+                storedItem.add(strArray[i]);
+            }
+        }
+
+        System.out.println(storedItem);
+    }
+}
+------------------------------------------------------------------------------------------------------------------------------
+Q.2)Write a program in Java to create an abstract class market. There are two methods getPrice() and getProductName() as abstract method.
+
+Solution:
+
+class Q2 {
+    public static void main(String[] args) {
+        Product pr = new Product();
+        pr.getProductName();
+
+        Price p = new Price();
+        p.getPrice();
+    }
+}
+
+abstract class Market {
+    abstract void getPrice();
+
+    abstract void getProductName();
+}
+
+class Price extends Market {
+    @Override
+    public void getPrice() {
+        System.out.println("The price is " + 10);
+    }
+
+    @Override
+    public void getProductName() {
+
+    }
+}
+
+class Product extends Market {
+    @Override
+    public void getProductName() {
+        System.out.println("Product = Oreo");
+    }
+
+    @Override
+    public void getPrice() {
+
+    }
+}
+--------------------------------------------------------------------------------------------------------------
+Q.3) Write a program in Java to find  2nd largest number in an array of Strings?
+
+Solution:
+
+class Q3 {
+    public static void main(String[] args) {
+        int arr[] = { 99, 45, 87, 23, 12, 3, 71, 64 };
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] > arr[j]) {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        System.out.println("Second Largest Number: " + arr[arr.length - 2]);
+    }
+}
+-------------------------------------------------------------------------------------------------------------------
+Q.4)Write a program in Java to find pair of numbers whose sum is a number present in an array of integers?
+    Example - { 2, 5 ,8 ,9, 0,1, 7 , 10}  Output - (2,5), (9,1) ,(0,1)
+    
+Solution:
+
+public class Q4 {
+    public static void main(String[] args) {
+        int arr[] = { 2, 5, 8, 9, 0, 1, 7, 10 };
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i + 1; j < arr.length; j++) {
+                for (int k = 0; k < arr.length; k++) {
+                    if (arr[i] + arr[j] == arr[k]) {
+                        System.out.println("(" + arr[i] + " " + arr[j] + ")");
+                    }
+                }
+            }
+        }
+    }
+}
+----------------------------------------------------------------------------------------------------------
+SQL -->
+
+Q.1)create and execute the sql in the tables(mentioned below) Tables
+    Subject ( id , rollno, subjectname , marks)
+    Student (id, rollno, sname, address )
+Write a SQL query to find the count of all students studying a paticular subject?
+Write a SQL query to find total marks of a particular student for all subjects?
+
+Solution:
+
+CREATE TABLE Subject(
+   	id VARCHAR(10) PRIMARY KEY,
+    rollno INT,
+    subname VARCHAR(20),
+    marks INT
+);
+ 
+CREATE TABLE Student(
+  	id VARCHAR(10),
+    rollno INT,
+    sname VARCHAR(20),
+    address VARCHAR(50),
+    FOREIGN KEY(id) REFERENCES Subject(id)
+);
+ 
+INSERT INTO Subject VALUES('A001', 001, 'Math', 93);
+INSERT INTO Subject VALUES('A002', 002, 'Biology', 65);
+INSERT INTO Subject VALUES('A003', 003, 'Chemistry', 80);
+INSERT INTO Subject VALUES('A004', 004, 'English', 99);
+INSERT INTO Subject VALUES('A005', 005, 'Physics', 70);
+ 
+INSERT INTO Student VALUES('A004', 004, 'Shadow', 'Bhubaneswar');
+INSERT INTO Student VALUES('A003', 003, 'Count', 'Ranchi');
+INSERT INTO Student VALUES('A002', 002, 'Drack', 'Kota');
+INSERT INTO Student VALUES('A001', 001, 'Tabish', 'Dumka');
+ 
+SELECT subname, COUNT(id) AS 'Total Students' FROM Subject WHERE subname = 'Biology' GROUP BY subname;
+
+SELECT SUM(marks) AS Total_Marks FROM SUBJECT, Student WHERE Subject.id = Student.id AND sname = 'Count';
+---------------------------------------------------------------------------------------------------------------------------------
+Q.2)product(id, name , price ,location) manufacturer( id, company_name, product_id, address)
+    Write a SQL query to find company_name of a particular product and location given input as product _id?
+    (Use Join statements)
+    
+Solution:
+
+CREATE TABLE Product(
+	id INT PRIMARY KEY,
+    NAME VARCHAR(30),
+    price INT,
+    location VARCHAR(30)
+);
+ 
+CREATE TABLE manufacturer(
+	id INT,
+    company_name VARCHAR(30),
+    product_id VARCHAR(5),
+    address VARCHAR(20),
+    FOREIGN KEY(id) REFERENCES Product(id)
+);
+ 
+INSERT INTO Product VALUES(1, 'Tech/IT support', 500, 'Bhubaneswar');
+INSERT INTO Product VALUES(2, 'Cloud services', 1000, 'Ranchi');
+INSERT INTO Product VALUES(3, 'Virtual desktops', 700, 'Kota');
+INSERT INTO Product VALUES(4, 'Data security', 900, 'Dumka');
+INSERT INTO Product VALUES(5, 'File servers', 300, 'Bhubaneswar');
+ 
+INSERT INTO manufacturer VALUES(1, 'Deloitte', 'A01', 'Jagmohan Nagar');
+INSERT INTO manufacturer VALUES(2, 'Virtusa', 'A02', 'Khandagiri');
+INSERT INTO manufacturer VALUES(3, 'Highradius', 'A03', 'Bapujinagar');
+INSERT INTO manufacturer VALUES(4, 'Wipro', 'A04', 'Udaygiri');
+INSERT INTO manufacturer VALUES(5, 'TCS', 'A05', 'Patia');
+ 
+SELECT company_name FROM Product, manufacturer WHERE Product.id = manufacturer.id AND product_id = 'A02';
+--------------------------------------------------------------------------------------------------------------
+HTML -->
+
+Q.1)Design an html page with following layout as mentioned below  (Include CSS as mentioned in diagram color) include table inside content section
+ 
+Solution:
+ 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="task.css" />
+    <title>TASK 1</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-lg-2" style="background-color: red; border: 1px solid">
+            <img src="lorem_img.jpg" alt="img" height="100px" width="200px" />
+        </div>
+        <div class="col-lg-10" style="background-color: green; border: 1px solid">
+            <h1 class="site_name">ABC Products</h1>
+        </div>
+    </div>
+    <main style="display: flex; margin-top: 100px">
+        <div style="flex: 1; background-color: skyblue">
+            <ul style="list-style-type: none; margin: 50px">
+                <li style="padding: 3px"><a href="">Link 1</a></li>
+                <li style="padding: 3px"><a href="">Link 2</a></li>
+                <li style="padding: 3px"><a href="">Link 3</a></li>
+                <li style="padding: 3px"><a href="">Link 4</a></li>
+                <li style="padding: 3px"><a href="">Link 5</a></li>
+                <li style="padding: 3px"><a href="">Link 6</a></li>
+            </ul>
+        </div>
+        <div style="flex: 1; margin-right: 200px; background-color: rgb(253, 255, 110)">
+            <table style="width:100%; text-align: center; margin: 50px">
+                <thead>
+                    <tr>
+                        <th>product_id</th>
+                        <th>product_name</th>
+                        <th>price</th>
+                        <th>location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Product 1</td>
+                        <td>100</td>
+                        <td>Bhubaneswar</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Product 2</td>
+                        <td>110</td>
+                        <td>Bhubaneswar</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Product 3</td>
+                        <td>120</td>
+                        <td>Bhubaneswar</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Product 4</td>
+                        <td>130</td>
+                        <td>Bhubaneswar</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Product 5</td>
+                        <td>140</td>
+                        <td>Bhubaneswar</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>6</td>
+                        <td>Product 6</td>
+                        <td>150</td>
+                        <td>Bhubaneswar</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </main>
+    <footer style="text-align: center; margin-top: 100px; background-color: green">All rights reserved. ABC Products
+    </footer>
+</body>
+
+</html>
