@@ -1,0 +1,388 @@
+Q.1)We will implement different file handler for different types of files such as text, image and xml files. Which design pattern will be preferred for this problem. Provide suitable code snippet for this.
+
+Solution:
+
+var Node = function (name) {	
+this.children = []; this.name = name;
+}
+
+Node.prototype = {
+add: function (child) {
+this.children.push(child);
+},
+
+remove: function (child) {
+var length = this.children.length; for (var i = 0; i < length; i++) {
+if (this.children[i] === child) { this.children.splice(i, 1); return;
+}
+}
+},
+getChild: function (i) {
+return this.children[i];
+},
+
+hasChildren: function () {
+return this.children.length > 0;
+}
+}
+function traverse(indent, node) { console.log(Array(indent++).join("--") + node.name);
+
+for (var i = 0, len = node.children.length; i < len; i++) {
+traverse(indent, node.getChild(i));
+}
+}
+
+function run() {
+var tree = new Node("root"); var left = new Node("left") var right = new Node("right");
+var leftleft = new Node("leftleft"); 
+var leftright = new Node("leftright"); 
+var rightleft = new Node("rightleft"); 
+var rightright = new Node("rightright");
+
+tree.add(left); tree.add(right);
+tree.remove(right);
+tree.add(right);
+
+left.add(leftleft); left.add(leftright);
+
+right.add(rightleft); right.add(rightright);
+
+traverse(1, tree);
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Q.2)One organization have one depratment as HR department and two child department as Humanity Department and Logistic Department under Hr department. 
+  We have to calulate tax as HRA is different for different departments but it should implement main TaxCalulator interface. 
+  Which design pattern will be preferred for this problem. Provide suitable code snippet for this.
+
+Solution: 
+
+Behavioral Pattern will be preferred for this problem.
+
+public interface TaxCalculator {
+	public abstract void execute();
+}
+public class Humanity implements TaxCalculator {
+	private int basic_salary;
+
+	public Order(int basic_salary) {
+		this.basic_salary = basic_salary;
+	}
+
+	@Override
+	public void execute() {
+        HRA=(10/100)*basicsalary;
+
+	}
+}
+public class Logistic implements TaxCalculator {
+	private int basic_salary;
+
+	public Order(int basic_salary) {
+		this.basic_salary = basic_salary;
+	}
+
+	@Override
+	public void execute() {
+        HRA=(10/100)*basicsalary;
+
+	}
+}
+public class Department {
+	public static void main(String[] args) {
+		basic_salary basic_salary = new basic_salary();
+        
+		Humanity humanity = new Humanity(basic_salary);
+		Logistic logistic = new Logistic(basic_salary);
+		Humanity.execute();
+
+		humanity = new humanity(basic_salary);
+		logistic = new Logistic(basic_salary);
+		Logistic.execute();
+	}
+}
+---------------------------------------------------------------------------------------------------------------------------------------
+Q.3)Write a javascript function to find average of all numbers and variance of those numbers ? Write Async/await function for both of calculations
+
+Solution:
+
+const arr = [4, 2, 8, 6, 7, 8, 10];
+const findVariance = (arr = []) => {
+if(!arr.length){ return 0;
+};
+const sum = arr.reduce((acc, val) => acc + val);
+const { length: num } = arr; 
+const median = sum / num; 
+let variance = 0; 
+arr.forEach(num => {variance += ((num - median) * (num - median));});
+variance /= num;
+return variance;
+};
+console.log(findVariance(arr))
+--------------------------------------------------------------------------------------------------------------------------------------------
+Q.4)Create a class as Product in Javascript which will have productId, ProductName and Productprice fields in that class. Create a few instance and store them in JSON format. Now access those data and print to console using Promise object.
+
+Solution:
+
+class productId
+{
+constructor( productId, ProductName,Productprice)
+{
+this.productId=productId; 
+this.ProductName=ProductName; 
+this.Productprice=Productprice;
+}
+}
+let ob1=new productId(1111,aaaa,3345); 
+let ob2=new productId(22,bbb,3456);
+-------------------------------------------------------------------------------------------------------------------------------------------
+Q5.)Create ReactJs/Angular web project on local system for below mentioned usability.(For Angular Group)
+    Design a login page with username and password as textfields. There will be a submit button and cancel button in that page. Now create a dummy data for valid username and password in the corresponding Javascript/Typescript file. Use Formhandler or FormGroup  to validate userbname and password and direct to another page(home.html)
+
+Solution:
+
+app.module.ts -->
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+
+@NgModule({
+ imports: [
+   BrowserModule,
+   FormsModule,
+   ReactiveFormsModule,
+   RouterModule.forRoot([]),
+ ],
+ declarations: [AppComponent],
+ bootstrap: [AppComponent],
+})
+export class AppModule {}
+
+
+app.component.ts -->
+
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+@Component({
+ selector: 'my-app',
+ templateUrl: './app.component.html',
+ styleUrls: ['./app.component.css'],
+})
+export class AppComponent {
+ public loginForm: FormGroup;
+ public submitted = false;
+ public cleared = false;
+
+ constructor(private formBuilder: FormBuilder, private router: Router) {}
+
+ ngOnInit(): void {
+   this.loginForm = this.formBuilder.group({
+     email: ['', [Validators.email, Validators.required]],
+     password: [
+       '',
+       [
+         Validators.required,
+         Validators.pattern(
+           '(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!#^~%*?&,.<>"\'\\;:{\\}\\[\\]\\|\\+\\-\\=\\_\\)\\(\\)\\`\\/\\\\\\]])[A-Za-z0-9d$@].{8,}'
+         ),
+       ],
+     ],
+   });
+ }
+
+ get formControl() {
+   return this.loginForm.controls;
+ }
+
+ onSubmit(): void {
+   this.submitted = true;
+   if (this.loginForm.valid) {
+     console.log(this.loginForm.value);
+     localStorage.setItem('user-Data', JSON.stringify(this.loginForm.value));
+     this.router.navigate(['/home']);
+   }
+ }
+
+ onCancel(): void {
+   this.cleared = true;
+   if (this.loginForm.valid) {
+     console.log(this.loginForm.value);
+     this.loginForm.reset();
+   }
+ }
+}
+
+
+app.component.html -->
+
+<div class="login-form">
+ <div>
+   <h2>Login</h2>
+   <form class="user-login" [formGroup]="loginForm">
+     <div class="row">
+       <div class="col-md-12 mb-3">
+         <label>Email Id</label>
+         <input
+           type="email"
+           class="form-control mb-2"
+           id="inputEmail"
+           formControlName="email"
+           placeholder="Enter Email"
+         />
+         <div
+           *ngIf="submitted && formControl.email.errors"
+           class="text-danger"
+         >
+           <div *ngIf="formControl.email.errors.email">
+             Email must be valid.
+           </div>
+         </div>
+       </div>
+       <div class="col-md-12 roundedTextBox mb-3">
+         <label>Password</label>
+         <input
+           type="password"
+           class="form-control mb-2"
+           id="inputPassword"
+           formControlName="password"
+           placeholder="Enter Password"
+         />
+         <div
+           *ngIf="submitted && formControl.password.errors"
+           class="text-danger"
+         >
+           <div *ngIf="formControl.password.errors.pattern">
+             <ul>
+               <li>Password should be alphanumeric</li>
+               <li>
+                 Password must contain a special character (@, $, !, &, etc)
+               </li>
+               <li>Password length must be greater than 8 characters</li>
+             </ul>
+           </div>
+         </div>
+       </div>
+     </div>
+     <br />
+     <div class="buttons">
+       <button (click)="onSubmit()" class="btn-submit" type="submit">
+         Submit
+       </button>
+       <button (click)="onCancel()" class="btn-cancel" type="cancel">
+         Cancel
+       </button>
+     </div>
+   </form>
+ </div>
+</div>
+-----------------------------------------------------------------------------------------------------------------------------------
+Q.6)Home.html
+	  Home page will contain all menu items as signup/login/ home/ manufacturer/ aboutus and body will contain a table which will have product list as mentioned below.
+	
+Solution:
+
+<html>
+<head>
+</head>
+<style>
+header {
+  background-color: lightgreen;
+  padding: 25px;
+  text-align: center;
+  font-size: 40px;
+  color: white;
+}
+</style>
+<header>
+<h1>home login signup aboutus</h1>
+<body>
+<table>
+<tr>
+<th>ID</th>
+<th>Product Name</th>
+<th>Product Description</th>
+<th>Product Price</th>
+<th>Manufacturer Name</th>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>mobile1</td>
+<td>mobile2</td>
+<td>mobile3</td>
+<td>mobile4</td>
+</tr>
+<tr>
+<td>description1</td>
+<td>description2</td>
+<td>description3</td>
+<td>description4</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>link1</td>
+<td>link2</td>
+<td>link3</td>
+<td>link4</td>
+</td>
+</table>
+</body>
+</html>
+     
+Part_2 -->
+
+<html>
+<head>
+</head>
+<style>
+header {
+  background-color: lightgreen;
+  padding: 25px;
+  text-align: center;
+  font-size: 40px;
+  color: white;
+}
+</style>
+<h1>home login signup aboutus</h1>
+
+<body>
+<table>
+<tr>
+<th>ID</th>
+<th>ID</th>
+<th>Manufacturer_name</th>
+<th>Address</th>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>manufactuter_name1</td>
+<td>manufactuter_name2</td>
+<td>manufactuter_name3</td>
+<td>manufactuter_name4</td>
+</tr>
+<tr>
+<td>address1</td>
+<td>address1</td>
+<td>address1</td>
+<td>address1</td>
+</tr>
+</table>
